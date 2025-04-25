@@ -1,5 +1,7 @@
 const express = require("express");
 const enquiryModel = require("../../models/enquiryModel");
+const StudentDetails = require("./../../models/studentDetails");
+const upload = require("../../utility/uploadSingleFile");
 
 const router = express.Router();
 
@@ -73,6 +75,45 @@ router.patch("/markedasunresolved", async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.post("/addstudents", upload.single("file"), async (req, res) => {
+  const { email, name, contact, address, course, university, doj, doc } =
+    req.body;
+
+  console.log(email, name, contact, address, course, university, doj, doc);
+  console.log(req.file);
+  const newStudent = new StudentDetails({
+    email,
+    name,
+    contact,
+    address,
+    course,
+    university,
+    doj: new Date(doj), // correct usage
+    doc: new Date(doc), // correct usage
+    image: `localhost:3000/uploads/${req.file.filename}`, // save file path as image
+  });
+
+  try {
+    await newStudent.save();
+    res.status(200).json({ msg: "done" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Internal Server Error occurred" });
+  }
+});
+
+router.get("/getstudentdetails", async (req, res) => {
+  try {
+    const students = await StudentDetails.find(); // renamed to "students"
+
+    res.status(200).json({ data: students });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({ err: "Internal server error occurred" });
   }
 });
 
