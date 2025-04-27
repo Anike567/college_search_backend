@@ -28,7 +28,7 @@ router.post("/getresolvedenquiry", async (req, res) => {
 
 router.post("/getunresolvedenquiry", async (req, res) => {
   try {
-    const result = await enquiryModel.find({ resolved: false }); // Even better: filter directly in the DB!
+    const result = await enquiryModel.find({ resolved: false });
 
     return res.status(200).json({ data: result });
   } catch (err) {
@@ -64,7 +64,7 @@ router.patch("/markedasunresolved", async (req, res) => {
     const enquiry = await enquiryModel.findOneAndUpdate(
       { _id: id },
       { resolved: false },
-      { new: true } // This option returns the updated document
+      { new: true }
     );
 
     if (!enquiry) {
@@ -82,8 +82,6 @@ router.post("/addstudents", upload.single("file"), async (req, res) => {
   const { email, name, contact, address, course, university, doj, doc } =
     req.body;
 
-  console.log(email, name, contact, address, course, university, doj, doc);
-  console.log(req.file);
   const newStudent = new StudentDetails({
     email,
     name,
@@ -91,8 +89,8 @@ router.post("/addstudents", upload.single("file"), async (req, res) => {
     address,
     course,
     university,
-    doj: new Date(doj), // correct usage
-    doc: new Date(doc), // correct usage
+    doj: new Date(doj),
+    doc: new Date(doc),
     image: `localhost:3000/uploads/${req.file.filename}`,
   });
 
