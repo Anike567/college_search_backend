@@ -93,7 +93,7 @@ router.post("/addstudents", upload.single("file"), async (req, res) => {
     university,
     doj: new Date(doj), // correct usage
     doc: new Date(doc), // correct usage
-    image: `localhost:3000/uploads/${req.file.filename}`, // save file path as image
+    image: `localhost:3000/uploads/${req.file.filename}`,
   });
 
   try {

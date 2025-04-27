@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
 
-const CollegeModel = mongoose.model(
-  "College",
-  new mongoose.Schema({
-    university_name: String,
-    nirf_rank: String,
-    courses_offered: String,
-    fee_range: String,
-  })
+const CollegeSchema = new mongoose.Schema(
+  {
+    university_name: { type: String, required: true },
+    nirf_rank: { type: Number, required: true },
+    courses_offered: { type: String, required: true },
+    fee_range: { type: String, required: true },
+    university_img: { type: String, default: null },
+  },
+  { timestamps: true }
 );
+
+const CollegeModel = mongoose.model("College", CollegeSchema);
 
 module.exports = CollegeModel;
