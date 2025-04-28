@@ -1,8 +1,9 @@
 const StudentDetails = require("./../models/studentDetails");
+const collegeModel = require("./../models/college");
 
 async function deleteAllStudents() {
   try {
-    const result = await StudentDetails.deleteMany({});
+    const result = await collegeModel.deleteMany({});
     console.log(`Deleted ${result.deletedCount} documents`);
   } catch (err) {
     console.log("Error deleting entries: ", err);

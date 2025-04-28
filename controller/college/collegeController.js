@@ -24,7 +24,9 @@ router.post("/adduniversity", upload.single("file"), async (req, res) => {
     const newUniversity = new CollegeModel({
       university_name,
       nirf_rank,
-      courses_offered,
+      courses_offered: courses_offered.split(",").map((data) => {
+        data.trim();
+      }),
       fee_range,
       university_img: `localhost:3000/uploads/${req.file.filename}`,
     });
