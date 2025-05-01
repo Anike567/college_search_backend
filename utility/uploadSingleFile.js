@@ -1,40 +1,26 @@
 const multer = require("multer");
-const fs = require("fs");
-const path = require("path");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-// Ensure the 'uploads' directory exists
-const uploadDir = path.join(__dirname, "./../uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-
-// Configure storage
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, uploadDir);
-  },
-  filename: (req, file, callback) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const extension = path.extname(file.originalname);
-    callback(null, `${file.fieldname}-${uniqueSuffix}${extension}`);
-    req.uploadedFilePath;
+// Configure Cloudinary storage for multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "uploads", // Optional folder name in Cloudinary
+    allowed_formats: ["jpg", "png", "jpeg", "webp"],
   },
 });
 
-// Optional: Filter only image files (uncomment if needed)
-
-const fileFilter = (req, file, callback) => {
+// Optional file filter
+const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
-    callback(null, true);
+    cb(null, true);
   } else {
-    callback(new Error("Only image files are allowed!"), false);
+    cb(new Error("Only image files are allowed!"), false);
   }
 };
 
-// Create the multer upload instance
-const upload = multer({
-  storage,
-  fileFilter,
-});
+// Create multer instance
+const upload = multer({ storage, fileFilter });
 
 module.exports = upload;

@@ -19,27 +19,38 @@ router.post("/adduniversity", upload.single("file"), async (req, res) => {
   try {
     const { university_name, nirf_rank, courses_offered, fee_range } = req.body;
 
-    // console.log(university_name, nirf_rank, courses_offered, fee_range);
-
     const newUniversity = new CollegeModel({
       university_name,
       nirf_rank,
-      courses_offered: courses_offered.split(",").map((data) => {
-        data.trim();
-      }),
+      courses_offered: courses_offered.split(",").map((data) => data.trim()),
       fee_range,
-      university_img: `localhost:3000/uploads/${req.file.filename}`,
+      university_img: req.file?.path, // For Cloudinary
     });
 
     const result = await newUniversity.save();
 
-    if (result) {
-      return res.status(200).json({ msg: "saved successfully" });
+    return res.status(200).json({ msg: "Saved successfully", data: result });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error occurred" });
+  }
+});
+
+router.delete("/deleteuniversity", async (req, res) => {
+  const { college_id } = req.body;
+  console.log(college_id);
+
+  try {
+    const result = await CollegeModel.deleteOne({ _id: college_id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ msg: "College not found" });
     }
 
-    return res.status(200).json({ msg: "saved successfully" });
+    return res.status(200).json({ msg: "Deleted Successfully" });
   } catch (err) {
-    res.status(500).json({ error: "Internavl Sever Error occured" });
+    console.error(err);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

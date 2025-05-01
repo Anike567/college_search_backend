@@ -91,7 +91,7 @@ router.post("/addstudents", upload.single("file"), async (req, res) => {
     university,
     doj: new Date(doj),
     doc: new Date(doc),
-    image: `localhost:3000/uploads/${req.file.filename}`,
+    image: req.file?.path,
   });
 
   try {

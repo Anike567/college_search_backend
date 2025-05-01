@@ -1,23 +1,30 @@
-const StudentDetails = require("./../models/studentDetails");
-const collegeModel = require("./../models/college");
-
-async function deleteAllStudents() {
-  try {
-    const result = await collegeModel.deleteMany({});
-    console.log(`Deleted ${result.deletedCount} documents`);
-  } catch (err) {
-    console.log("Error deleting entries: ", err);
-  }
-}
-
 const mongoose = require("mongoose");
-const EnquiryModel = require("./../models/enquiryModel");
+const StudentDetails = require("./../models/studentDetails");
 
-mongoose.connect("mongodb://127.0.0.1:27017/college_search", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+// Connect to MongoDB
+mongoose.connect(
+  "mongodb+srv://admin-aniket:Test123@cluster0.bikic.mongodb.net/college_search",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+
+// Handle connection success
+mongoose.connection.once("open", async () => {
+  try {
+    const result = await StudentDetails.deleteMany({});
+    console.log(`Deleted ${result.deletedCount} student documents`);
+
+    // Optional: Close connection after deletion
+    mongoose.connection.close();
+  } catch (err) {
+    console.error("Error deleting student entries:", err);
+    mongoose.connection.close();
+  }
 });
 
-mongoose.connection.once("open", async () => {
-  deleteAllStudents();
+// Handle connection error
+mongoose.connection.on("error", (err) => {
+  console.error("MongoDB connection error:", err);
 });
