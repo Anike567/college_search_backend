@@ -1,6 +1,6 @@
 const express = require("express");
 const enquiryModel = require("../../models/enquiryModel");
-const StudentDetails = require("./../../models/studentDetails");
+const StudentDetails = require("../../models/studentDetails");
 const upload = require("../../utility/uploadSingleFile");
 
 const router = express.Router();
