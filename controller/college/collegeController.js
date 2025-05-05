@@ -17,13 +17,20 @@ router.get("/", (req, res) => {
 });
 router.post("/adduniversity", upload.single("file"), async (req, res) => {
   try {
-    const { university_name, nirf_rank, courses_offered, fee_range } = req.body;
+    const {
+      university_name,
+      nirf_rank,
+      courses_offered,
+      fee_range,
+      description,
+    } = req.body;
 
     const newUniversity = new CollegeModel({
       university_name,
       nirf_rank,
       courses_offered: courses_offered.split(",").map((data) => data.trim()),
       fee_range,
+      description,
       university_img: req.file?.path, // For Cloudinary
     });
 

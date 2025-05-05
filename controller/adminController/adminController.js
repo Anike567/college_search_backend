@@ -79,12 +79,22 @@ router.patch("/markedasunresolved", async (req, res) => {
 });
 
 router.post("/addstudents", upload.single("file"), async (req, res) => {
-  const { email, name, contact, address, course, university, doj, doc } =
-    req.body;
+  const {
+    email,
+    name,
+    enrollment_no,
+    contact,
+    address,
+    course,
+    university,
+    doj,
+    doc,
+  } = req.body;
 
   const newStudent = new StudentDetails({
     email,
     name,
+    enrollment_no,
     contact,
     address,
     course,

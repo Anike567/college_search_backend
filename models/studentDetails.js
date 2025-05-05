@@ -4,6 +4,7 @@ const StudentDetails = mongoose.model(
   new mongoose.Schema({
     email: { type: String, required: true },
     name: { type: String, required: true },
+    enrollment_no: { type: String, require: true },
     contact: { type: String, required: true },
     address: { type: String, required: true },
     course: { type: String, required: true },

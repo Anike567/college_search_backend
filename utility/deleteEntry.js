@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const StudentDetails = require("./../models/studentDetails");
+const college = require("./../models/college");
 
 // Connect to MongoDB
 mongoose.connect(
@@ -13,7 +14,7 @@ mongoose.connect(
 // Handle connection success
 mongoose.connection.once("open", async () => {
   try {
-    const result = await StudentDetails.deleteMany({});
+    const result = await college.deleteMany({});
     console.log(`Deleted ${result.deletedCount} student documents`);
 
     // Optional: Close connection after deletion
